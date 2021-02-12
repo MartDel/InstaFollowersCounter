@@ -1,4 +1,4 @@
-#define NBDIGITS 7
+#define NBDIGITS 8
 #define NBDISPLAY 5
 
 #define A 2
@@ -6,12 +6,12 @@
 #define C 4
 #define D 5
 #define E 6
-#define F 9
 #define G 7
 #define H 8
+#define FF 9
 
-int nb_pins[5] = {A1, A2, A3, A4, A5};
-int letter_pins[NBDIGITS] = {A, B, C, D, E, G, H};
+const int nb_pins[5] = {A1, A2, A3, A4, A5};
+const int letter_pins[NBDIGITS] = {A, B, C, D, E, G, H, FF};
 
 void setup() {
   for(int i = 0; i < NBDISPLAY; i++){
@@ -21,6 +21,12 @@ void setup() {
   for(int i = 0; i < NBDIGITS; i++){
     pinMode(letter_pins[i], OUTPUT);
   }
+  
+  // Test first display
+  /*for(int i = 0; i < 10; i++){
+    setDigit(1, i);
+    delay(1000);
+  }*/
 }
 void loop() {
   printNumber(12345);
@@ -30,17 +36,17 @@ void loop() {
 void setNumber(int n) {
   bool combi[NBDIGITS];
   switch (n) {
-    case 1 : setArrayContent(combi, 0,0,1,0,0,1,0); break;
-    case 2 : setArrayContent(combi, 1,0,1,1,1,0,1); break;
-    case 3 : setArrayContent(combi, 1,0,1,0,1,1,1); break;
-    case 4 : setArrayContent(combi, 0,1,1,0,0,1,1); break;
-    case 5 : setArrayContent(combi, 1,1,0,0,1,1,1); break;
-    case 6 : setArrayContent(combi, 1,1,0,1,1,1,1); break;
-    case 7 : setArrayContent(combi, 1,0,1,0,0,1,0); break;
-    case 8 : setArrayContent(combi, 1,1,1,1,1,1,1); break;
-    case 9 : setArrayContent(combi, 1,1,1,0,1,1,1); break;
-    case 0 : setArrayContent(combi, 1,1,1,1,1,1,0); break;
-    default: setArrayContent(combi, 0,0,0,0,0,0,0); break;
+    case 1 : setArrayContent(combi, 0,0,1,0,0,1,0,0); break;
+    case 2 : setArrayContent(combi, 1,0,1,1,1,0,1,0); break;
+    case 3 : setArrayContent(combi, 1,0,1,0,1,1,1,0); break;
+    case 4 : setArrayContent(combi, 0,1,1,0,0,1,1,0); break;
+    case 5 : setArrayContent(combi, 1,1,0,0,1,1,1,0); break;
+    case 6 : setArrayContent(combi, 1,1,0,1,1,1,1,0); break;
+    case 7 : setArrayContent(combi, 1,0,1,0,0,1,0,0); break;
+    case 8 : setArrayContent(combi, 1,1,1,1,1,1,1,0); break;
+    case 9 : setArrayContent(combi, 1,1,1,0,1,1,1,0); break;
+    case 0 : setArrayContent(combi, 1,1,1,1,1,1,0,0); break;
+    default: setArrayContent(combi, 0,0,0,0,0,0,0,0); break;
   }
   for(int i = 0; i < NBDIGITS; i++){
     digitalWrite(letter_pins[i], combi[i]);
@@ -62,6 +68,8 @@ void setDigit(int digit, int n) {
     digitalWrite(nb_pins[i], combi[i]);
     setNumber(n);
   }
+  if(digit == 2) digitalWrite(FF, 1);
+  else digitalWrite(FF, 0);
 }
 void printNumber(int n) {
   int dm = n/10000;
@@ -73,13 +81,13 @@ void printNumber(int n) {
   int decompose[5] = {dm,m,c,d,u};
   for(int i = 5; i > 0; i--){
     setDigit(i, decompose[i-1]);
-    delay(1);
+    delay(2);
   }
 }
 
 // Get digit sequence to print a specific number
-void setArrayContent(bool* array, bool n1, bool n2, bool n3, bool n4, bool n5, bool n6, bool n7){
-  bool sequence[NBDIGITS] = {n1,n2,n3,n4,n5,n6,n7};
+void setArrayContent(bool* array, bool n1, bool n2, bool n3, bool n4, bool n5, bool n6, bool n7, bool n8){
+  bool sequence[NBDIGITS] = {n1,n2,n3,n4,n5,n6,n7,n8};
   for (size_t i = 0; i < NBDIGITS; i++) {
     *array = sequence[i];
     array++;
