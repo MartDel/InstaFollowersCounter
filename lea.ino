@@ -13,7 +13,12 @@
 const int nb_pins[5] = {A1, A2, A3, A4, A5};
 const int letter_pins[NBDIGITS] = {A, B, C, D, E, G, H, DP};
 
+String r = "";
+int to_print = 0;
+
 void setup() {
+  Serial.begin(115200);
+  
   for(int i = 0; i < NBDISPLAY; i++){
     pinMode(nb_pins[i], OUTPUT);
     digitalWrite(nb_pins[i], 1);
@@ -30,7 +35,20 @@ void setup() {
 }
 
 void loop() {
-  printNumber(12345);
+  if (Serial.available()) {
+    char c = Serial.read();
+    if(c == '\n'){
+      // End of transmission
+      to_print = r.toInt();
+      r = "";
+      Serial.print("->");
+      Serial.println(to_print);
+    } else {
+      r.concat(c);
+      Serial.println(r);
+    }
+  }
+  printNumber(to_print);
 }
 
 // Get digit sequence to print a specific number
@@ -50,4 +68,3 @@ void setSmallArrayContent(bool* array, bool n1, bool n2, bool n3, bool n4, bool 
     array++;
   }
 }
-
