@@ -1,3 +1,7 @@
+const char *host = "www.instagram.com";
+const String param = "/les_coulisses_dune_bethunoise/?__a=1";
+const int httpsPort = 443;
+
 String getJSONData(){
   #ifdef SHOW_LOG
   Serial.printf("Using fingerprint '%s'\n", fingerprint);

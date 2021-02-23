@@ -6,7 +6,7 @@
 #include <ArduinoJson.h>
 #include "Credentials.h"
 
-// #define SHOW_LOG
+#define SHOW_LOG
 
 // WiFi settings
 #define SSID1 "Bbox-A9482AED"
@@ -14,9 +14,6 @@
 // Request settings
 #define DELAY 300000
 #define CONNECT_TIMEOUT 5000
-const char *host = "www.instagram.com";
-const String param = "/les_coulisses_dune_bethunoise/?__a=1";
-const int httpsPort = 443;
 
 ESP8266WiFiMulti wifiMulti;
 WiFiClientSecure https;
