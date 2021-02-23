@@ -6,6 +6,8 @@
 #include <ArduinoJson.h>
 #include "Credentials.h"
 
+// #define SHOW_LOG
+
 // WiFi settings
 #define SSID1 "Bbox-A9482AED"
 
@@ -20,7 +22,10 @@ ESP8266WiFiMulti wifiMulti;
 WiFiClientSecure https;
 
 void setup() {
+  #ifdef SHOW_LOG
   Serial.begin(9600);
+  #endif
+  Serial1.begin(115200);
   
   // Configure WiFi
   WiFi.persistent(false);
@@ -29,18 +34,25 @@ void setup() {
   // Init WiFi list
   wifiMulti.addAP(SSID1, PASSWORD1);
 }
-
+  
 void loop() {
   if (wifiMulti.run(CONNECT_TIMEOUT) == WL_CONNECTED) {
     // ESP8266 is connected to a WiFi network
+    #ifdef SHOW_LOG
     Serial.print("Connected to ");
     Serial.println(WiFi.SSID());
+    #endif
     
     String result = getJSONData();
+    #ifdef SHOW_LOG
     Serial.println(result);
+    #endif
     
     int followers = getFollowersCount(result); // 'followers' may be -1
+    #ifdef SHOW_LOG
     Serial.println(followers);
+    #endif
+    Serial1.println(followers);
     
     delay(DELAY);
   }

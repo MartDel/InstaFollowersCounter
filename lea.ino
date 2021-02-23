@@ -43,7 +43,7 @@ void loop() {
       r = "";
       Serial.print("->");
       Serial.println(to_print);
-    } else {
+    } else if(isDigit(c)) {
       r.concat(c);
       Serial.println(r);
     }
