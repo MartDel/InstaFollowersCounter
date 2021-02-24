@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <title>Configuration du compteur d'abonnés</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <style media="screen" type="text/css">
+            body{
+                font-family: sans-serif;
+                background-color: #eee;
+                margin: 0;
+                padding: 50px;
+                padding-top: 0;
+            }
+            h1{ text-align: center; }
+            ul{
+                margin-top: 50px;
+                margin-bottom: 0;
+                padding: 0;
+                display: flex;
+                justify-content: space-around;
+            }
+            ul li{
+                display: block;
+                list-style: none;
+                padding: 20px;
+                width: 100%;
+                text-align: center;
+                padding-bottom: 0;
+            }
+            ul li a{
+                display: block;
+                text-decoration: none;
+                color: #000;
+                width: 75%;
+                margin: auto;
+                padding-bottom: 20px;
+            }
+            section{
+                display: none;
+                margin: 0;
+                padding: 20px;
+                background-color: #fff;
+                box-shadow: 5px 4px 8px 0 rgba(0,0,0,0.2);
+            }
+            .active-tab{
+                font-weight: bold;
+                background-color: #fff;
+            }
+            .active-tab a{ border-bottom: 1px solid #000; }
+            .active{ display: block; }
+            .wifi-list li input[type="button"]{
+                display: none;
+                margin-left: 10px;
+                background-color: #e22b2b;
+                border-radius: 50px;
+                border-width: 0;
+                color: #fff;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            .wifi-list li:hover input[type="button"]{ display: inline-block; }
+            .add-wifi{ margin-top: 50px; }
+            .add-wifi legend{
+                font-weight: bold;
+                font-size: 1.17em;
+            }
+            .add-wifi input[type="submit"]{
+                background-color: transparent;
+                color: #1ea616;
+                border: 2px solid #1ea616;
+                padding: 10px;
+                font-weight: bold;
+                border-radius: 10px;
+            }
+            @media screen and (max-width: 700px){
+                body{ padding: 10px; }
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Configuration du compteur d'abonnés</h1>
+        <ul>
+            <li><a href="#wifi">WiFi</a></li>
+            <li><a href="#counters">Compteurs</a></li>
+        </ul>
+        <section id="wifi">
+            <h3>Réseaux WiFi enregistrés :</h3>
+            <ol class="wifi-list">
+                <li>
+                    <label for="wifi0">Box n°1</label>
+                    <input type="password" value="motdepasseaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" id="wifi0" disabled />
+                    <input type="button" value="&times;" onclick="window.location.href = ''" />
+                </li>
+            </ol>
+            <form class="add-wifi" action="" method="post">
+                <fieldset>
+                    <legend>Ajouter un réseau WiFi</legend>
+                    <p>
+                        <label for="ssid">Nom du réseau (SSID) : </label>
+                        <input type="text" name="ssid" id="ssid" placeholder="Nom du réseau" />
+                    </p>
+                    <p>
+                        <label for="password">Mot de passe du réseau : </label>
+                        <input type="password" name="ssid" id="password" placeholder="Mot de passe du réseau" />
+                    </p>
+                    <input type="submit" value="Ajouter le réseau" />
+                </fieldset>
+            </form>
+        </section>
+        <section id="counters">
+
+        </section>
+        <script type="text/javascript">
+            window.onload = () => {
+                let hash = window.location.hash == '' ? '#wifi' : window.location.hash
+                document.querySelector('a[href="' + hash + '"]').parentNode.classList.add('active-tab')
+                document.querySelector(hash).classList.add('active')
+            }
+            const tabs = document.querySelectorAll('ul li a')
+            for(let i = 0; i < tabs.length; i++){
+                tabs[i].onclick = (e) => {
+                    const li = e.target.parentNode
+                    const id = e.target.hash
+                    if(li.classList.contains('active-tab')) return;
+                    // Manage tabs
+                    document.getElementsByClassName('active-tab')[0].classList.remove('active-tab')
+                    li.classList.add('active-tab')
+                    // Manage sections
+                    document.getElementsByClassName('active')[0].classList.remove('active')
+                    document.querySelector(id).classList.add('active')
+                }
+            }
+            const wifis = document.querySelectorAll('.wifi-list li')
+            for(let i = 0; i < wifis.length; i++){
+                wifis[i].onclick = (e) => {
+                    // Get li parent
+                    const path = e.path
+                    let li = null
+                    for(let j = 0; j < path.length; j++){
+                        if(path[j].nodeName === 'LI') li = path[j]
+                    }
+                    if(!li) return
+                    // Manage password inout
+                    const input = li.children[1]
+                    const type = input.type
+                    input.type = type === 'password' ? 'text' : 'password'
+                }
+            }
+        </script>
+    </body>
+</html>
